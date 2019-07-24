@@ -4,9 +4,9 @@
 
 ## Related Projects
 
-  - https://github.com/bedroost/gallery
-  - https://github.com/bedroost/description
-  - https://github.com/bedroost/booking
+  - https://github.com/airtimize/gallery
+  - https://github.com/airtimize/description
+  - https://github.com/airtimize/booking
 
 ## Table of Contents
 
@@ -41,7 +41,6 @@ An `nvmrc` file is included if using [nvm](https://github.com/creationix/nvm).
 From within the root directory:
 
 ```sh
-npm install -g webpack
 npm install
 ```
 
