@@ -1,24 +1,26 @@
 /* eslint-disable max-len */
 /* eslint-disable camelcase */
 const faker = require('faker');
-const db = require('./index');
+const fs = require('fs');
+//const db = require('./index');
 
 // helper function to make a new Listing instance
-const listingMaker = (listingid, ratings, numReviews, reviews) => (
-  new db.Listing({
-    listingid,
-    ratings,
-    numReviews,
-    reviews,
-  })
-);
+// const listingMaker = (listingid, ratings, numReviews, reviews) => (
+//   new db.Listing({
+//     listingid,
+//     ratings,
+//     numReviews,
+//     reviews,
+//   })
+// );
 
 // helper function to sort reviews array by created_at, most recent first, before saving to document
 // alternative was to use mongoose/mongo operations: update, $push, $each
-const sortByCreated_At = arr => (
-  arr.sort((a, b) => b.created_at - a.created_at)
-);
+// const sortByCreated_At = arr => (
+//   arr.sort((a, b) => b.created_at - a.created_at)
+// );
 
+const reviewGen = function() {
 for (let i = 0; i < 100; i += 1) {
   // create listingid
   const listingid = i + 1;
@@ -27,27 +29,27 @@ for (let i = 0; i < 100; i += 1) {
   // each listing will have same ratings, response_username, response_avatar
   // each listing will have variance in reviews array
   // use Math.round(num / 0.5) * 0.5 to give review value rounded to nearest .0 or .5
-  const numReviews = faker.random.number({ min: 5, max: 200 });
-  console.log(`Listing index ${i} has ${numReviews} reviews`);
+  const numReviews = faker.random.number({ min: 0, max: 30 });
+  //console.log(`Listing index ${i} has ${numReviews} reviews`);
   const accuracy = Math.round(faker.finance.amount(1, 5, 1) / 0.5) * 0.5;
   const communication = Math.round(faker.finance.amount(1, 5, 1) / 0.5) * 0.5;
   const cleanliness = Math.round(faker.finance.amount(1, 5, 1) / 0.5) * 0.5;
   const location = Math.round(faker.finance.amount(1, 5, 1) / 0.5) * 0.5;
   const check_in = Math.round(faker.finance.amount(1, 5, 1) / 0.5) * 0.5;
   const value = Math.round(faker.finance.amount(1, 5, 1) / 0.5) * 0.5;
-  const overall = Math.round((accuracy + communication + cleanliness + location + check_in + value) / 6);
+  //const overall = Math.round((accuracy + communication + cleanliness + location + check_in + value) / 6);
   const response_username = faker.name.firstName();
   const response_avatar = faker.internet.avatar();
 
   // create ratings object
-  const ratings = {};
-  ratings.overall = overall;
-  ratings.accuracy = accuracy;
-  ratings.communication = communication;
-  ratings.cleanliness = cleanliness;
-  ratings.location = location;
-  ratings.check_in = check_in;
-  ratings.value = value;
+  //const ratings = {};
+  //ratings.overall = overall;
+  // ratings.accuracy = accuracy;
+  // ratings.communication = communication;
+  // ratings.cleanliness = cleanliness;
+  // ratings.location = location;
+  // ratings.check_in = check_in;
+  // ratings.value = value;
 
   // create reviews array. Number of reviews determined by random numReviews
   // each review object made will be pushed into reviews array
@@ -57,8 +59,8 @@ for (let i = 0; i < 100; i += 1) {
 
     // generate data for review object
     const created_at = faker.date.past();
-    const textShort = faker.lorem.paragraph();
-    const textLong = faker.lorem.paragraphs();
+    const textShort = faker.lorem.sentence();
+    //const textLong = faker.lorem.paragraphs();
     const username = faker.name.firstName();
     const avatar = faker.internet.avatar();
     const response_text = faker.lorem.sentence();
@@ -77,9 +79,10 @@ for (let i = 0; i < 100; i += 1) {
     // populate empty review object
     // if random number is divisible by 3, review object WILL have a response.
     // if not, the review object will NOT have a response
-    if (random_hasResponse % 3 === 0) {
+    if (random_hasResponse % 7 === 0) {
       review.created_at = created_at;
-      review.text = random_reviewLength % 2 === 0 ? textShort : textLong;
+      //review.text = random_reviewLength % 2 === 0 ? textShort : textLong;
+      review.text = textShort;
       review.username = username;
       review.avatar = avatar;
       review.hasResponse = true;
@@ -89,7 +92,8 @@ for (let i = 0; i < 100; i += 1) {
       review.response_text = response_text;
     } else {
       review.created_at = created_at;
-      review.text = random_reviewLength % 2 === 0 ? textShort : textLong;
+      //review.text = random_reviewLength % 2 === 0 ? textShort : textLong;
+      review.text = textShort;
       review.username = username;
       review.avatar = avatar;
       review.hasResponse = false;
@@ -100,19 +104,54 @@ for (let i = 0; i < 100; i += 1) {
   }
 
   // sort reviews array by created_at, most recent first
-  sortByCreated_At(reviews);
-
+  //sortByCreated_At(reviews);
   // pass in ratings object and reviews array into new Listing instance
-  const newListing = listingMaker(listingid, ratings, numReviews, reviews);
+  //const newListing = listingMaker(listingid, ratings, numReviews, reviews);
 
   // save newListing to database
-  newListing.save((err) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(`newListing ${i} was saved.`);
-      // console.log(db.db);
-      db.db.close();
-    }
+  // newListing.save((err) => {
+  //   if (err) {
+  //     console.log(err);
+  //   } else {
+  //     console.log(`newListing ${i} was saved.`);
+  //     // console.log(db.db);
+  //     db.db.close();
+  //   }
+  // });
+  }
+}
+
+//pipe(fs.createWriteStream('download.csv'));
+
+const fileStream = fs.createWriteStream('./file.csv');
+
+
+function something () {
+  return new Promise(resolve => {
+    fileStream.once('drain', resolve);
   });
 }
+
+async function writer() {
+  let ableToWrite = true;
+
+  for(let i=0; i< 1e6; i++) {
+    ableToWrite = fileStream.write('Lorem ipsum dolor sit amet\n');
+    if (!ableToWrite) {
+      await something();
+    }
+  }
+}
+
+writer();
+fileStream.end();
+
+// for (let i = 0; i < 1e6; i++) {
+//     if (ableToWrite) {
+//         ableToWrite = fileWriteStream.write(`.testClass${itr}-${i%2} { background: red } \n`);
+//     } else {
+//         fileWriteStream.once('drain', () => {
+//             ableToWrite = fileWriteStream.write(`.testClass${itr}-${i%2} { background: red } \n`);
+//         })
+//     }
+// }
