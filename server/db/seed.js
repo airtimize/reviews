@@ -3,7 +3,17 @@
 const faker = require('faker');
 const fs = require('fs');
 //const db = require('./index');
+const fileStream = fs.createWriteStream('./listings.csv');
 
+
+function something () {
+  return new Promise(resolve => {
+    fileStream.once('drain', resolve);
+  });
+}
+
+// async function writer() {
+//   let ableToWrite = true;
 // helper function to make a new Listing instance
 // const listingMaker = (listingid, ratings, numReviews, reviews) => (
 //   new db.Listing({
@@ -20,9 +30,13 @@ const fs = require('fs');
 //   arr.sort((a, b) => b.created_at - a.created_at)
 // );
 
-const reviewGen = function() {
-for (let i = 0; i < 100; i += 1) {
+//const reviewGen = function() {
+async function writer() {
+  let ableToWrite = true;
+
+for (let i = 0; i < 1e7; i += 1) {
   // create listingid
+  const listings = [];
   const listingid = i + 1;
 
   // use faker to make random values to assign to schema keys:
@@ -41,117 +55,103 @@ for (let i = 0; i < 100; i += 1) {
   const response_username = faker.name.firstName();
   const response_avatar = faker.internet.avatar();
 
-  // create ratings object
-  //const ratings = {};
-  //ratings.overall = overall;
-  // ratings.accuracy = accuracy;
-  // ratings.communication = communication;
-  // ratings.cleanliness = cleanliness;
-  // ratings.location = location;
-  // ratings.check_in = check_in;
-  // ratings.value = value;
 
-  // create reviews array. Number of reviews determined by random numReviews
-  // each review object made will be pushed into reviews array
-  const reviews = [];
-  for (let j = 0; j < numReviews; j += 1) {
-    const review = {};
+  ableToWrite = fileStream.write(`${listingid},${numReviews},${accuracy},${communication},${cleanliness},${location},${check_in},${value},${response_username},${response_avatar}\n`);
+  
+  if (!ableToWrite) {
+    await something();
 
-    // generate data for review object
-    const created_at = faker.date.past();
-    const textShort = faker.lorem.sentence();
-    //const textLong = faker.lorem.paragraphs();
-    const username = faker.name.firstName();
-    const avatar = faker.internet.avatar();
-    const response_text = faker.lorem.sentence();
-    // console.log('start: ', created_at.slice(0, 11));
-    const start = created_at.toISOString().slice(0, 10);
-    const currentDate = new Date();
-    const end = currentDate.toISOString().slice(0, 10);
-    const response_created_at = faker.date.between(start, end);
 
-    // random number to determine if this review has text longer than 50 words
-    const random_reviewLength = faker.random.number({ min: 0, max: 100 });
-
-    // random number to determine if this review has a response
-    const random_hasResponse = faker.random.number({ min: 0, max: 100 });
-
-    // populate empty review object
-    // if random number is divisible by 3, review object WILL have a response.
-    // if not, the review object will NOT have a response
-    if (random_hasResponse % 7 === 0) {
-      review.created_at = created_at;
-      //review.text = random_reviewLength % 2 === 0 ? textShort : textLong;
-      review.text = textShort;
-      review.username = username;
-      review.avatar = avatar;
-      review.hasResponse = true;
-      review.response_username = response_username;
-      review.response_avatar = response_avatar;
-      review.response_created_at = response_created_at;
-      review.response_text = response_text;
-    } else {
-      review.created_at = created_at;
-      //review.text = random_reviewLength % 2 === 0 ? textShort : textLong;
-      review.text = textShort;
-      review.username = username;
-      review.avatar = avatar;
-      review.hasResponse = false;
+  // listings.push({
+  //   listingid:listingid,
+  //   numReviews:numReviews,
+  //   accuracy:accuracy,
+  //   communication:communication,
+  //   cleanliness:cleanliness,
+  //   location:location,
+  //   check_in:check_in,
+  //   value:value,
+  //   response_username:response_username,
+  //   response_avatar:response_avatar
+  // })
     }
-
-    // add the populated review object into the reviews array
-    reviews.push(review);
   }
+fileStream.end();
+}
+writer();
+
+// for (let i = 0; i < 1000; i += 1) {
+//   const reviews = [];
+//   for (let j = 0; j < numReviews; j += 1) {
+//     const review = {};
+
+//     const created_at = faker.date.past();
+//     const textShort = faker.lorem.sentence();
+//     const username = faker.name.firstName();
+//     const avatar = faker.internet.avatar();
+//     const response_text = faker.lorem.sentence();
+//     const start = created_at.toISOString().slice(0, 10);
+//     const currentDate = new Date();
+//     const end = currentDate.toISOString().slice(0, 10);
+//     const response_created_at = faker.date.between(start, end);
+
+//     // random number to determine if this review has text longer than 50 words
+//     const random_reviewLength = faker.random.number({ min: 0, max: 100 });
+
+//     // random number to determine if this review has a response
+//     const random_hasResponse = faker.random.number({ min: 0, max: 100 });
+
+//     // populate empty review object
+//     // if random number is divisible by 3, review object WILL have a response.
+//     // if not, the review object will NOT have a response
+//     if (random_hasResponse % 7 === 0) {
+//       review.created_at = created_at;
+//       review.text = textShort;
+//       review.username = username;
+//       review.avatar = avatar;
+//       review.hasResponse = true;
+//       review.response_username = response_username;
+//       review.response_avatar = response_avatar;
+//       review.response_created_at = response_created_at;
+//       review.response_text = response_text;
+//     } else {
+//       review.created_at = created_at;
+//       review.text = textShort;
+//       review.username = username;
+//       review.avatar = avatar;
+//       review.hasResponse = false;
+//     }
+
+//     // add the populated review object into the reviews array
+//     reviews.push(review);
+//     }
+//   }
+
+//uncomment
 
   // sort reviews array by created_at, most recent first
   //sortByCreated_At(reviews);
   // pass in ratings object and reviews array into new Listing instance
   //const newListing = listingMaker(listingid, ratings, numReviews, reviews);
 
-  // save newListing to database
-  // newListing.save((err) => {
-  //   if (err) {
-  //     console.log(err);
-  //   } else {
-  //     console.log(`newListing ${i} was saved.`);
-  //     // console.log(db.db);
-  //     db.db.close();
-  //   }
-  // });
-  }
-}
-
-//pipe(fs.createWriteStream('download.csv'));
-
-const fileStream = fs.createWriteStream('./file.csv');
+// const fileStream = fs.createWriteStream('./file.csv');
 
 
-function something () {
-  return new Promise(resolve => {
-    fileStream.once('drain', resolve);
-  });
-}
-
-async function writer() {
-  let ableToWrite = true;
-
-  for(let i=0; i< 1e6; i++) {
-    ableToWrite = fileStream.write('Lorem ipsum dolor sit amet\n');
-    if (!ableToWrite) {
-      await something();
-    }
-  }
-}
-
-writer();
-fileStream.end();
-
-// for (let i = 0; i < 1e6; i++) {
-//     if (ableToWrite) {
-//         ableToWrite = fileWriteStream.write(`.testClass${itr}-${i%2} { background: red } \n`);
-//     } else {
-//         fileWriteStream.once('drain', () => {
-//             ableToWrite = fileWriteStream.write(`.testClass${itr}-${i%2} { background: red } \n`);
-//         })
-//     }
+// function something () {
+//   return new Promise(resolve => {
+//     fileStream.once('drain', resolve);
+//   });
 // }
+
+// async function writer() {
+//   let ableToWrite = true;
+
+//   for(let i=0; i< 1e6; i++) {
+//     ableToWrite = fileStream.write('Lorem ipsum dolor sit amet\n');
+//     if (!ableToWrite) {
+//       await something();
+//     }
+//   }
+// }
+
+// writer();
