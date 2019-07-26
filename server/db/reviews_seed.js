@@ -13,51 +13,24 @@ function something () {
 async function writer() {
   let ableToWrite = true;
 
-for (let i = 0; i < 14e7; i += 1) {
+for (let i = 0; i < 50e6; i += 1) {
 
     const review_id = i + 1;
-    const listing_id = Math.floor(Math.random() * Math.floor(10000000));
-    const created_at = faker.date.past();
-    const textShort = faker.lorem.sentence();
-    const username = faker.name.firstName();
-    const avatar = faker.internet.avatar();
+    const listing_id = faker.random.number({ min: 0, max: 1000000 });
+    const guest_user_id = faker.random.number({ min: 0, max: 1000 });
+    const review_text = faker.lorem.sentence();
+    const reviews_created_at = faker.date.past();
+    const has_response = faker.random.number({ min: 0, max: 100 });
+    const host_user_id = faker.random.number({ min: 0, max: 1000 });
     const response_text = faker.lorem.sentence();
+
+    const created_at = faker.date.past();
     const start = created_at.toISOString().slice(0, 10);
     const currentDate = new Date();
     const end = currentDate.toISOString().slice(0, 10);
     const response_created_at = faker.date.between(start, end);
-    const response_username = faker.name.firstName();
-    const response_avatar = faker.internet.avatar();
-
-    // random number to determine if this review has text longer than 50 words
-    const random_reviewLength = faker.random.number({ min: 0, max: 100 });
-
-    // random number to determine if this review has a response
-    const random_hasResponse = faker.random.number({ min: 0, max: 100 });
-
-    // populate empty review object
-    // if random number is divisible by 3, review object WILL have a response.
-    // if not, the review object will NOT have a response
-    // if (random_hasResponse % 7 === 0) {
-    //   review.created_at = created_at;
-    //   review.text = textShort;
-    //   review.username = username;
-    //   review.avatar = avatar;
-    //   review.hasResponse = true;
-    //   review.response_username = response_username;
-    //   review.response_avatar = response_avatar;
-    //   review.response_created_at = response_created_at;
-    //   review.response_text = response_text;
-    // } else {
-    //   review.created_at = created_at;
-    //   review.text = textShort;
-    //   review.username = username;
-    //   review.avatar = avatar;
-    //   review.hasResponse = false;
-    // }
-
     
-  ableToWrite = fileStream.write(`${review_id},${listing_id},${created_at},${textShort},${username},${avatar},${response_text},${response_created_at},${response_username},${response_avatar}\n`);
+  ableToWrite = fileStream.write(`${review_id},${listing_id},${guest_user_id},${review_text},${reviews_created_at},${has_response},${host_user_id},${response_text},${response_created_at}\n`);
 
   if (!ableToWrite) {
     await something();
