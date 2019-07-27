@@ -1,8 +1,8 @@
 const faker = require('faker');
 const fs = require('fs');
 
-const listingStream = fs.createWriteStream('./listings.csv');
-const reviewStream = fs.createWriteStream('./reviews.csv');
+const listingStream = fs.createWriteStream('../csv/listings.csv');
+const reviewStream = fs.createWriteStream('../csv/reviews.csv');
 
 //console.time('csv files creation');
 
@@ -50,16 +50,16 @@ async function writer() {
       review_id += 1;
       const guest_user_id = faker.random.number({ min: 0, max: 1000 });
       const review_text = faker.lorem.sentence();
-      const reviews_created_at = faker.date.past();
+      const reviews_created_at = faker.date.past().toDateString();
       const has_response = faker.random.number({ min: 0, max: 100 });
       const host_user_id = faker.random.number({ min: 0, max: 1000 });
-      let response_text = null;
+      let response_text = '';
 
       const created_at = faker.date.past();
       const start = created_at.toISOString().slice(0, 10);
       const currentDate = new Date();
       const end = currentDate.toISOString().slice(0, 10);
-      let response_created_at = null;
+      let response_created_at = '';
 
       accuracy += faker.random.number({ min: 1, max: 5 });
       communication += faker.random.number({ min: 1, max: 5 });
@@ -70,7 +70,7 @@ async function writer() {
 
       if (has_response % 7 === 0){
         response_text = faker.lorem.sentence();
-        response_created_at = faker.date.between(start, end);
+        response_created_at = faker.date.between(start, end).toDateString();
       }
 
       ableToWrite = reviewStream.write(`${listing_id},${guest_user_id},${review_text},${reviews_created_at},${accuracy},${communication},${cleanliness},${location},${check_in},${value},${host_user_id},${response_text},${response_created_at}\n`);
