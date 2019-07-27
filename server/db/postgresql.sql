@@ -36,3 +36,10 @@ CREATE TABLE users (
   username VARCHAR(30)
 )
 
+copy listings(id, accuracy, communication, cleanliness,location, checkin, value, num_reviews) FROM '/Users/dorriswong/hrsf119/airtimize/review/server/db/listings.csv' DELIMITER ',' CSV HEADER;
+
+copy reviews(listing_id,guest_user_id,review_text,reviews_created_at, accuracy, communication, cleanliness,location, checkin, value, host_user_id, response_text, response_created_at) FROM '/Users/dorriswong/hrsf119/airtimize/review/server/db/reviews.csv' DELIMITER ',' CSV HEADER;
+
+copy users(avatar, username) from '/Users/dorriswong/hrsf119/airtimize/review/server/db/users.csv' DELIMITER ',' CSV HEADER;
+
+-- EXPLAIN ANALYSE select * from [tablename] where [condition];
