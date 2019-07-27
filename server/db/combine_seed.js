@@ -34,7 +34,7 @@ function randn_bm(min, max, skew) {
 
 async function writer() {
   let ableToWrite = true;
-  //let review_id = 1;
+  let review_id = 1;
 
   for (let i = 0; i < 2000; i += 1) {
     const listing_id = i + 1;
@@ -47,7 +47,7 @@ async function writer() {
     const value = Math.round(faker.finance.amount(1, 5, 1) / 0.5) * 0.5;
 
     for (let j = 0; j < num_reviews; j += 1) {
-      //review_id += 1;
+      review_id += 1;
       const guest_user_id = faker.random.number({ min: 0, max: 1000 });
       const review_text = faker.lorem.sentence();
       const reviews_created_at = faker.date.past();
@@ -83,9 +83,10 @@ async function writer() {
 
   listingStream.end();
   reviewStream.end();
-
+  console.log(review_id);
 }
 
 writer();
+
 
 console.timeEnd('csv files creation');
