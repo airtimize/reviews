@@ -39,7 +39,6 @@ async function writer() {
   for (let i = 0; i < 200; i += 1) {
     const listing_id = i + 1;
     const num_reviews = Math.floor(randn_bm(1, 30, 3));
-    //let accuracy,communication,cleanliness,location,check_in,value;
     let accuracy = 0;
     let communication = 0;
     let cleanliness = 0;
@@ -81,12 +80,12 @@ async function writer() {
       }
     }
 
-    accuracy = Math.round(accuracy/num_reviews*2)/2 || 0;
-    communication = Math.round(communication/num_reviews*2)/2 || 0;
-    cleanliness = Math.round(cleanliness/num_reviews*2)/2 || 0;
-    location = Math.round(location/num_reviews*2)/2 || 0;
-    check_in = Math.round(check_in/num_reviews*2)/2 || 0;
-    value = Math.round(value/num_reviews*2)/2 || 0;
+    accuracy = Math.round((accuracy/num_reviews*2))/2 || 0;
+    communication = Math.round((communication/num_reviews)*2)/2 || 0;
+    cleanliness = Math.round((cleanliness/num_reviews)*2)/2 || 0;
+    location = Math.round((location/num_reviews)*2)/2 || 0;
+    check_in = Math.round((check_in/num_reviews)*2)/2 || 0;
+    value = Math.round((value/num_reviews)*2)/2 || 0;
 
     ableToWrite = listingStream.write(`${listing_id},${accuracy},${communication},${cleanliness},${location},${check_in},${value},${num_reviews}\n`);
 
