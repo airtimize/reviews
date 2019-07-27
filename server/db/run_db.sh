@@ -1,7 +1,8 @@
 #!/bin/bash
 
-createdb
-psql -h localhost -f postgresql.sql
+#createdb
+psql -h localhost -f schema/postgresql.sql
+# pv /tmp/data.txt | psql -c "COPY mytest FROM STDIN;"
 echo "Done with Postgres"
-cqlsh -f cassandra.cql
-echo "Done with Cassandra"
+#cqlsh -f schema/cassandra.cql
+#echo "Done with Cassandra"
