@@ -36,10 +36,16 @@ async function writer() {
   let ableToWrite = true;
   let review_id = 1;
 
-  for (let i = 0; i < 10e6; i += 1) {
+  for (let i = 0; i < 200; i += 1) {
     const listing_id = i + 1;
     const num_reviews = Math.floor(randn_bm(1, 30, 3));
-    let accuracy, communication, cleanliness, location, check_in, value = 0;
+    //let accuracy,communication,cleanliness,location,check_in,value;
+    let accuracy = 0;
+    let communication = 0;
+    let cleanliness = 0;
+    let location = 0;
+    let check_in = 0;
+    let value = 0;
 
     for (let j = 0; j < num_reviews; j += 1) {
       review_id += 1;
@@ -56,19 +62,19 @@ async function writer() {
       const end = currentDate.toISOString().slice(0, 10);
       let response_created_at = null;
 
-      accuracy += faker.random.number({ min: 0, max: 5 });
-      communication += faker.random.number({ min: 0, max: 5 });
-      cleanliness += faker.random.number({ min: 0, max: 5 });
-      location += faker.random.number({ min: 0, max: 5 });
-      check_in += faker.random.number({ min: 0, max: 5 });
-      value += faker.random.number({ min: 0, max: 5 });
+      accuracy += faker.random.number({ min: 1, max: 5 });
+      communication += faker.random.number({ min: 1, max: 5 });
+      cleanliness += faker.random.number({ min: 1, max: 5 });
+      location += faker.random.number({ min: 1, max: 5 });
+      check_in += faker.random.number({ min: 1, max: 5 });
+      value += faker.random.number({ min: 1, max: 5 });
 
       if (has_response % 7 === 0){
         response_text = faker.lorem.sentence();
         response_created_at = faker.date.between(start, end);
       }
 
-      ableToWrite = reviewStream.write(`${listing_id},${guest_user_id},${review_text},${reviews_created_at},${host_user_id},${response_text},${response_created_at}\n`);
+      ableToWrite = reviewStream.write(`${listing_id},${guest_user_id},${review_text},${reviews_created_at},${accuracy},${communication},${cleanliness},${location},${check_in},${value},${host_user_id},${response_text},${response_created_at}\n`);
 
       if (!ableToWrite) {
         await something2();
