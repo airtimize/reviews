@@ -19,6 +19,12 @@ CREATE TABLE reviews (
   guest_user_id SMALLINT,
   review_text VARCHAR(255),
   review_created_at DATE,
+  accuracy SMALLINT,
+  communication SMALLINT,
+  cleanliness SMALLINT,
+  location SMALLINT,
+  checkin SMALLINT,
+  value SMALLINT,
   host_user_id SMALLINT,
   response_text VARCHAR(255),
   response_created_at DATE
@@ -29,3 +35,4 @@ CREATE TABLE users (
   avatar VARCHAR(30),
   username VARCHAR(30)
 )
+
