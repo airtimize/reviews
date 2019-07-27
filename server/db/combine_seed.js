@@ -39,12 +39,7 @@ async function writer() {
   for (let i = 0; i < 10e6; i += 1) {
     const listing_id = i + 1;
     const num_reviews = Math.floor(randn_bm(1, 30, 3));
-    const accuracy = Math.round(faker.finance.amount(1, 5, 1) / 0.5) * 0.5;
-    const communication = Math.round(faker.finance.amount(1, 5, 1) / 0.5) * 0.5;
-    const cleanliness = Math.round(faker.finance.amount(1, 5, 1) / 0.5) * 0.5;
-    const location = Math.round(faker.finance.amount(1, 5, 1) / 0.5) * 0.5;
-    const check_in = Math.round(faker.finance.amount(1, 5, 1) / 0.5) * 0.5;
-    const value = Math.round(faker.finance.amount(1, 5, 1) / 0.5) * 0.5;
+    let accuracy, communication, cleanliness, location, check_in, value = 0;
 
     for (let j = 0; j < num_reviews; j += 1) {
       review_id += 1;
@@ -61,6 +56,13 @@ async function writer() {
       const end = currentDate.toISOString().slice(0, 10);
       let response_created_at = null;
 
+      accuracy += faker.random.number({ min: 0, max: 5 });
+      communication += faker.random.number({ min: 0, max: 5 });
+      cleanliness += faker.random.number({ min: 0, max: 5 });
+      location += faker.random.number({ min: 0, max: 5 });
+      check_in += faker.random.number({ min: 0, max: 5 });
+      value += faker.random.number({ min: 0, max: 5 });
+
       if (has_response % 7 === 0){
         response_text = faker.lorem.sentence();
         response_created_at = faker.date.between(start, end);
@@ -72,6 +74,13 @@ async function writer() {
         await something2();
       }
     }
+
+    accuracy = Math.round(accuracy/num_reviews*2)/2 || 0;
+    communication = Math.round(communication/num_reviews*2)/2 || 0;
+    cleanliness = Math.round(cleanliness/num_reviews*2)/2 || 0;
+    location = Math.round(location/num_reviews*2)/2 || 0;
+    check_in = Math.round(check_in/num_reviews*2)/2 || 0;
+    value = Math.round(value/num_reviews*2)/2 || 0;
 
     ableToWrite = listingStream.write(`${listing_id},${accuracy},${communication},${cleanliness},${location},${check_in},${value},${num_reviews}\n`);
 
