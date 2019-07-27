@@ -4,7 +4,7 @@ const fs = require('fs');
 const listingStream = fs.createWriteStream('./listings.csv');
 const reviewStream = fs.createWriteStream('./reviews.csv');
 
-console.time('csv files creation');
+//console.time('csv files creation');
 
 function something() {
   return new Promise((resolve) => {
@@ -36,7 +36,7 @@ async function writer() {
   let ableToWrite = true;
   let review_id = 1;
 
-  for (let i = 0; i < 2000; i += 1) {
+  for (let i = 0; i < 10e6; i += 1) {
     const listing_id = i + 1;
     const num_reviews = Math.floor(randn_bm(1, 30, 3));
     const accuracy = Math.round(faker.finance.amount(1, 5, 1) / 0.5) * 0.5;
@@ -83,10 +83,10 @@ async function writer() {
 
   listingStream.end();
   reviewStream.end();
-  console.log(review_id);
+  //console.timeEnd('csv files creation');
+  //console.log(review_id);
 }
 
 writer();
 
 
-console.timeEnd('csv files creation');
