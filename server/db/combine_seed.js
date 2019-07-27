@@ -4,6 +4,8 @@ const fs = require('fs');
 const listingStream = fs.createWriteStream('./listings.csv');
 const reviewStream = fs.createWriteStream('./reviews.csv');
 
+console.time('csv files creation');
+
 function something() {
   return new Promise((resolve) => {
     listingStream.once('drain', resolve);
@@ -85,3 +87,5 @@ async function writer() {
 }
 
 writer();
+
+console.timeEnd('csv files creation');
