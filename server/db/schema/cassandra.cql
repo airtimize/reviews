@@ -30,9 +30,46 @@ CREATE TABLE reviews (
   host_user_id int,
   response_text varchar,
   response_created_at date,
-  PRIMARY KEY(listing_id, guest_user_id, host_user_id, accuracy, communication, cleanliness,location, checkin, value)
+  PRIMARY KEY(listing_id, reviews_created_at)
+  --, guest_user_id, host_user_id, accuracy, communication, cleanliness,location, checkin, value)
+)
+WITH CLUSTERING ORDER BY (reviews_created_at DESC);
+
+CREATE TABLE reviews_by_accuracy (
+  listing_id int,
+  accuracy tinyint,
+  PRIMARY KEY(listing_id, accuracy)
 );
---WITH CLUSTERING ORDER BY (reviews_created_at DESC);
+
+CREATE TABLE reviews_by_communication(
+  listing_id int,
+  communication tinyint,
+  PRIMARY KEY(listing_id, communication)
+);
+
+CREATE TABLE reviews_by_cleanliness(
+  listing_id int,
+  cleanliness tinyint,
+  PRIMARY KEY(listing_id, cleanliness)
+);
+
+CREATE TABLE reviews_by_location(
+  listing_id int,
+  location tinyint,
+  PRIMARY KEY(listing_id, location)
+);
+
+CREATE TABLE reviews_by_checkin(
+  listing_id int,
+  checkin tinyint,
+  PRIMARY KEY(listing_id, checkin)
+);
+
+CREATE TABLE reviews_by_value(
+  listing_id int,
+  value tinyint,
+  PRIMARY KEY(listing_id, value)
+);
 
 CREATE TABLE users (
   id int primary key,
