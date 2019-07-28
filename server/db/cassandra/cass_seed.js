@@ -88,7 +88,7 @@ async function writer() {
     overall = num_reviews ? Math.round(((overallaccuracy+overallcommunication+overallcleanliness+overalllocation+overallcheck_in+overallvalue)/6)*2)/2 : 0;
     let review_string = JSON.stringify(reviews);
 
-    ableToWrite = listingStream.write(`{"listing_id":${listing_id},"hostusername":${hostusername}, "hostavatar":"${hostavatar}","overallaccuracy":${overallaccuracy},"overallcommunication":${overallcommunication},"overallcleanliness":${overallcleanliness},"overalllocation":${overalllocation},"overallcheck_in":${overallcheck_in},"overallvalue":${overallvalue},"overall":${overall},"num_reviews":${num_reviews},"reviews":${review_string}},`);
+    ableToWrite = listingStream.write(`{"listing_id":"${listing_id}","hostusername":"${hostusername}", "hostavatar":"${hostavatar}","overallaccuracy":"${overallaccuracy}","overallcommunication":"${overallcommunication}","overallcleanliness":"${overallcleanliness}","overalllocation":"${overalllocation}","overallcheck_in":"${overallcheck_in}","overallvalue":"${overallvalue}","overall":"${overall}","num_reviews":"${num_reviews}","reviews":${review_string}},`);
 
     if (!ableToWrite) {
       await something();
