@@ -31,9 +31,14 @@ CREATE TABLE reviews (
   response_text varchar,
   response_created_at date,
   PRIMARY KEY(listing_id, reviews_created_at)
-  --, guest_user_id, host_user_id, accuracy, communication, cleanliness,location, checkin, value)
 )
 WITH CLUSTERING ORDER BY (reviews_created_at DESC);
+
+CREATE TABLE users (
+  id int primary key,
+  username text,
+  avatar text
+);
 
 CREATE TABLE reviews_by_accuracy (
   listing_id int,
@@ -71,11 +76,31 @@ CREATE TABLE reviews_by_value(
   PRIMARY KEY(listing_id, value)
 );
 
-CREATE TABLE users (
-  id int primary key,
-  username text,
-  avatar text
-);
+CREATE TABLE overall_listings (
+  listing_id int,
+  overallaccuracy decimal,
+  overallcommunication decimal,
+  overallcleanliness decimal,
+  overalllocation decimal,
+  overallcheckin decimal,
+  overallvalue decimal,
+  num_reviews tinyint,
+  review_id int,
+  guest_user_id int,
+  review_text varchar,
+  reviews_created_at date,
+  accuracy tinyint,
+  communication tinyint,
+  cleanliness tinyint,
+  location tinyint,
+  checkin tinyint,
+  value tinyint,
+  host_user_id int,
+  response_text varchar,
+  response_created_at date,
+  PRIMARY KEY((listing_id, review_id), reviews_created_at)
+)
+WITH CLUSTERING ORDER BY (reviews_created_at DESC);
 
 -- COPY listings (listing_id, accuracy, communication, cleanliness, location, checkin, value, num_reviews)
 -- FROM '/Users/dorriswong/hrsf119/airtimize/review/server/db/csv/listings.csv'
