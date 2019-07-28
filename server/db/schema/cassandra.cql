@@ -1,11 +1,12 @@
 DROP KEYSPACE IF EXISTS airtimize_reviews;
-CREATE KEYSPACE airtimize_reviews with replicaton={'class':'SimpleStrategy','replication_factor': 1};
+CREATE KEYSPACE airtimize_reviews WITH REPLICATION = {'class': 'SimpleStrategy', 'replication_factor': 1};
+
 use airtimize_reviews;
 
 --tracing on;
 
 CREATE TABLE listings (
-  listing_id tinyint primary key,
+  listing_id int primary key,
   accuracy decimal,
   communication decimal,
   cleanliness decimal,
@@ -16,8 +17,8 @@ CREATE TABLE listings (
 );
 
 CREATE TABLE reviews (
-  listing_id tinyint,
-  guest_user_id tinyint,
+  listing_id int,
+  guest_user_id int,
   review_text varchar,
   reviews_created_at date,
   accuracy tinyint,
@@ -26,20 +27,27 @@ CREATE TABLE reviews (
   location tinyint,
   checkin tinyint,
   value tinyint,
-  host_user_id tinyint,
+  host_user_id int,
   response_text varchar,
   response_created_at date,
-  PRIMARY KEY((listing_id, guest_user_id, host_user_id, accuracy, communication, cleanliness,location, checkin, value) WITH CLUSTERING ORDER BY (reviews_created_at DESC));
+  PRIMARY KEY(listing_id, guest_user_id, host_user_id, accuracy, communication, cleanliness,location, checkin, value)
 );
+--WITH CLUSTERING ORDER BY (reviews_created_at DESC);
 
 CREATE TABLE users (
-  id tinyint primary key,
+  id int primary key,
   username text,
   avatar text
-)
+);
 
-COPY airtimize_reviews.listings(id, accuracy, communication, cleanliness, location, checkin, value, num_reviews) FROM '/Users/dorriswong/hrsf119/airtimize/review/server/db/csv/listings.csv' WITH DELIMITER ',' AND HEADER=TRUE;
+-- COPY listings (listing_id, accuracy, communication, cleanliness, location, checkin, value, num_reviews)
+-- FROM '/Users/dorriswong/hrsf119/airtimize/review/server/db/csv/listings.csv'
+-- WITH DELIMITER = ',' AND HEADER = TRUE;
 
-COPY airtimize_reviews.reviews(listing_id, guest_user_id, review_text, reviews_created_at, accuracy, communication, cleanliness,location, checkin, value, host_user_id, response_text, response_created_at) FROM '/Users/dorriswong/hrsf119/airtimize/review/server/db/csv/reviews.csv' WITH DELIMITER ',' AND HEADER=TRUE;
+-- COPY reviews(listing_id, guest_user_id, review_text, reviews_created_at, accuracy, communication, cleanliness,location, checkin, value, host_user_id, response_text, response_created_at)
+-- FROM '/Users/dorriswong/hrsf119/airtimize/review/server/db/csv/reviews.csv'
+-- WITH DELIMITER = ',' AND HEADER = TRUE;
 
-COPY airtimize_reviews.users(id, username, avatar) from '/Users/dorriswong/hrsf119/airtimize/review/server/db/csv/users.csv' WITH DELIMITER ',' AND HEADER=TRUE;
+-- COPY users(id, username, avatar)
+-- FROM '/Users/dorriswong/hrsf119/airtimize/review/server/db/csv/users.csv'
+-- WITH DELIMITER = ',' AND HEADER = TRUE;
