@@ -1,7 +1,7 @@
 const faker = require('faker');
 const fs = require('fs');
 
-const listingStream = fs.createWriteStream('../csv/listings.json');
+const listingStream = fs.createWriteStream('../text/listings.json');
 
 function something() {
   return new Promise((resolve) => {
@@ -24,12 +24,15 @@ function randn_bm(min, max, skew) {
 }
 
 async function writer() {
+  listingStream.write('[');
   let ableToWrite = true;
   let review_id = 1;
 
   for (let i = 0; i < 100; i += 1) {
     const listing_id = i + 1;
     const num_reviews = Math.floor(randn_bm(0, 30, 3));
+    const hostusername = faker.name.firstName();
+    const hostavatar = faker.internet.avatar();
     let overallaccuracy = 0;
     let overallcommunication = 0;
     let overallcleanliness = 0;
@@ -46,8 +49,6 @@ async function writer() {
       const review_text = faker.lorem.sentence();
       const review_created_at = faker.date.past().toDateString();
       const has_response = faker.random.number({ min: 0, max: 100 });
-      const hostusername = faker.name.firstName();
-      const hostavatar = faker.internet.avatar();
       let response_text = '';
 
       const created_at = faker.date.past();
@@ -75,7 +76,7 @@ async function writer() {
         response_created_at = faker.date.between(start, end).toDateString();
       }
 
-      reviews.push({review_id, guestusername, guestavatar, review_text,review_created_at,accuracy,communication,cleanliness,location,check_in,value,hostusername, hostavatar,response_text,response_created_at})
+      reviews.push({review_id, guestusername, guestavatar, review_text,review_created_at,accuracy,communication,cleanliness,location,check_in,value,response_text,response_created_at})
     }
 
     overallaccuracy = num_reviews ? Math.round((overallaccuracy/num_reviews*2))/2 : 0;
@@ -87,14 +88,14 @@ async function writer() {
     overall = num_reviews ? Math.round(((overallaccuracy+overallcommunication+overallcleanliness+overalllocation+overallcheck_in+overallvalue)/6)*2)/2 : 0;
     let review_string = JSON.stringify(reviews);
 
-    ableToWrite = listingStream.write(`${listing_id},${overallaccuracy},${overallcommunication},${overallcleanliness},${overalllocation},${overallcheck_in},${overallvalue},${overall},${review_string},${num_reviews}\n`);
+    ableToWrite = listingStream.write(`{"listing_id":${listing_id},"hostusername":${hostusername}, "hostavatar":"${hostavatar}","overallaccuracy":${overallaccuracy},"overallcommunication":${overallcommunication},"overallcleanliness":${overallcleanliness},"overalllocation":${overalllocation},"overallcheck_in":${overallcheck_in},"overallvalue":${overallvalue},"overall":${overall},"num_reviews":${num_reviews},"reviews":${review_string}},`);
 
     if (!ableToWrite) {
       await something();
     }
 
   }
-
+  listingStream.write(']');
   listingStream.end();
 }
 
