@@ -1,8 +1,8 @@
 const faker = require('faker');
 const fs = require('fs');
 
-const listingStream = fs.createWriteStream('../csv/listings.csv');
-const reviewStream = fs.createWriteStream('../csv/reviews.csv');
+const listingStream = fs.createWriteStream('./listings.csv');
+const reviewStream = fs.createWriteStream('./reviews.csv');
 
 //console.time('csv files creation');
 
@@ -36,18 +36,19 @@ async function writer() {
   let ableToWrite = true;
   let review_id = 1;
 
-  for (let i = 0; i < 200; i += 1) {
+  for (let i = 0; i < 100; i += 1) {
     const listing_id = i + 1;
-    const num_reviews = Math.floor(randn_bm(1, 30, 3));
-    let accuracy = 0;
-    let communication = 0;
-    let cleanliness = 0;
-    let location = 0;
-    let check_in = 0;
-    let value = 0;
+    const num_reviews = Math.floor(randn_bm(0, 30, 3));
+    let overallaccuracy = 0;
+    let overallcommunication = 0;
+    let overallcleanliness = 0;
+    let overalllocation = 0;
+    let overallcheck_in = 0;
+    let overallvalue = 0;
+    let overall = 0;
 
     for (let j = 0; j < num_reviews; j += 1) {
-      review_id += 1;
+      review_id = j+ 1;
       const guest_user_id = faker.random.number({ min: 0, max: 1000 });
       const review_text = faker.lorem.sentence();
       const reviews_created_at = faker.date.past().toDateString();
@@ -61,12 +62,19 @@ async function writer() {
       const end = currentDate.toISOString().slice(0, 10);
       let response_created_at = '';
 
-      accuracy += faker.random.number({ min: 1, max: 5 });
-      communication += faker.random.number({ min: 1, max: 5 });
-      cleanliness += faker.random.number({ min: 1, max: 5 });
-      location += faker.random.number({ min: 1, max: 5 });
-      check_in += faker.random.number({ min: 1, max: 5 });
-      value += faker.random.number({ min: 1, max: 5 });
+      accuracy = faker.random.number({ min: 1, max: 5 });
+      communication = faker.random.number({ min: 1, max: 5 });
+      cleanliness = faker.random.number({ min: 1, max: 5 });
+      location = faker.random.number({ min: 1, max: 5 });
+      check_in = faker.random.number({ min: 1, max: 5 });
+      value = faker.random.number({ min: 1, max: 5 });
+
+      overallaccuracy += accuracy;
+      overallcommunication += communication;
+      overallcleanliness += cleanliness;
+      overalllocation += location;
+      overallcheck_in += check_in;
+      overallvalue += value;
 
       if (has_response % 7 === 0){
         response_text = faker.lorem.sentence();
@@ -80,14 +88,15 @@ async function writer() {
       }
     }
 
-    accuracy = Math.round((accuracy/num_reviews*2))/2 || 0;
-    communication = Math.round((communication/num_reviews)*2)/2 || 0;
-    cleanliness = Math.round((cleanliness/num_reviews)*2)/2 || 0;
-    location = Math.round((location/num_reviews)*2)/2 || 0;
-    check_in = Math.round((check_in/num_reviews)*2)/2 || 0;
-    value = Math.round((value/num_reviews)*2)/2 || 0;
+    overallaccuracy = Math.round((overallaccuracy/num_reviews*2))/2 || 0;
+    overallcommunication = Math.round((overallcommunication/num_reviews)*2)/2 || 0;
+    overallcleanliness = Math.round((overallcleanliness/num_reviews)*2)/2 || 0;
+    overalllocation = Math.round((overalllocation/num_reviews)*2)/2 || 0;
+    overallcheck_in = Math.round((overallcheck_in/num_reviews)*2)/2 || 0;
+    overallvalue = Math.round((overallvalue/num_reviews)*2)/2 || 0;
+    overall = Math.round(((overallaccuracy+overallcommunication+overallcleanliness+overalllocation+overallcheck_in+overallvalue)/6)*2)/2;
 
-    ableToWrite = listingStream.write(`${listing_id},${accuracy},${communication},${cleanliness},${location},${check_in},${value},${num_reviews}\n`);
+    ableToWrite = listingStream.write(`${listing_id},${overallaccuracy},${overallcommunication},${overallcleanliness},${overalllocation},${overallcheck_in},${overallvalue},${overall},${num_reviews}\n`);
 
     if (!ableToWrite) {
       await something();

@@ -1,7 +1,7 @@
 const faker = require('faker');
 const fs = require('fs');
 
-const fileStream = fs.createWriteStream('../csv/users.csv');
+const fileStream = fs.createWriteStream('./users.csv');
 
 
 function something() {
@@ -18,7 +18,7 @@ async function writer() {
     const username = faker.name.firstName();
     const avatar = faker.internet.avatar();
 
-    ableToWrite = fileStream.write(`${user_id},${username},${avatar}\n`);
+    ableToWrite = fileStream.write(`${username},${avatar}\n`);
 
     if (!ableToWrite) {
       await something();
