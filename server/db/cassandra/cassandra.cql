@@ -14,10 +14,11 @@ CREATE TABLE listings (
   checkin decimal,
   value decimal,
   overall decimal,
-  num_reviews tinyint
+  num_reviews int
 );
 
 CREATE TABLE reviews (
+  id uuid,
   review_id tinyint,
   listing_id int,
   guest_username text,
@@ -34,7 +35,7 @@ CREATE TABLE reviews (
   host_avatar text,
   response_text varchar,
   response_created_at text,
-  PRIMARY KEY(listing_id, reviews_created_at)
+  PRIMARY KEY((listing_id, review_id),reviews_created_at)
 )
 WITH CLUSTERING ORDER BY (reviews_created_at DESC);
 
