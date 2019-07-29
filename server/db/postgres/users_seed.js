@@ -13,7 +13,7 @@ function something() {
 async function writer() {
   let ableToWrite = true;
 
-  for (let i = 0; i < 100; i += 1) {
+  for (let i = 0; i < 1e6; i += 1) {
     const user_id = i + 1;
     const username = faker.name.firstName();
     const avatar = faker.internet.avatar();

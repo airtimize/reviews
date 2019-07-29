@@ -18,13 +18,12 @@ CREATE TABLE listings (
 );
 
 CREATE TABLE reviews (
-  id uuid,
   review_id tinyint,
   listing_id int,
   guest_username text,
   guest_avatar text,
   review_text varchar,
-  reviews_created_at text,
+  review_created_at text,
   accuracy tinyint,
   communication tinyint,
   cleanliness tinyint,
@@ -35,9 +34,29 @@ CREATE TABLE reviews (
   host_avatar text,
   response_text varchar,
   response_created_at text,
-  PRIMARY KEY((listing_id, review_id),reviews_created_at)
+  PRIMARY KEY(listing_id,review_created_at)
 )
-WITH CLUSTERING ORDER BY (reviews_created_at DESC);
+WITH CLUSTERING ORDER BY (review_created_at DESC);
+
+CREATE TABLE delete_reviews (
+  review_id tinyint,
+  listing_id int,
+  guest_username text,
+  guest_avatar text,
+  review_text varchar,
+  review_created_at text,
+  accuracy tinyint,
+  communication tinyint,
+  cleanliness tinyint,
+  location tinyint,
+  checkin tinyint,
+  value tinyint,
+  host_username text,
+  host_avatar text,
+  response_text varchar,
+  response_created_at text,
+  PRIMARY KEY(listing_id,review_id)
+);
 
 -- CREATE TABLE users (
 --   id int primary key,
@@ -48,37 +67,37 @@ WITH CLUSTERING ORDER BY (reviews_created_at DESC);
 CREATE TABLE reviews_by_accuracy (
   listing_id int,
   accuracy tinyint,
-  PRIMARY KEY(listing_id, accuracy)
+  PRIMARY KEY(listing_id)
 );
 
 CREATE TABLE reviews_by_communication(
   listing_id int,
   communication tinyint,
-  PRIMARY KEY(listing_id, communication)
+  PRIMARY KEY(listing_id)
 );
 
 CREATE TABLE reviews_by_cleanliness(
   listing_id int,
   cleanliness tinyint,
-  PRIMARY KEY(listing_id, cleanliness)
+  PRIMARY KEY(listing_id)
 );
 
 CREATE TABLE reviews_by_location(
   listing_id int,
   location tinyint,
-  PRIMARY KEY(listing_id, location)
+  PRIMARY KEY(listing_id)
 );
 
 CREATE TABLE reviews_by_checkin(
   listing_id int,
   checkin tinyint,
-  PRIMARY KEY(listing_id, checkin)
+  PRIMARY KEY(listing_id)
 );
 
 CREATE TABLE reviews_by_value(
   listing_id int,
   value tinyint,
-  PRIMARY KEY(listing_id, value)
+  PRIMARY KEY(listing_id)
 );
 
 --NOSQL structure
@@ -102,7 +121,11 @@ COPY listings (listing_id, accuracy, communication, cleanliness, location, check
 FROM '/Users/dorriswong/hrsf119/airtimize/review/server/db/cassandra/listings.csv'
 WITH DELIMITER = ',' AND HEADER = FALSE;
 
-COPY reviews(review_id, listing_id, guest_username, guest_avatar, review_text, reviews_created_at, accuracy, communication, cleanliness,location, checkin, value, host_username, host_avatar, response_text, response_created_at)
+COPY reviews(review_id, listing_id, guest_username, guest_avatar, review_text, review_created_at, accuracy, communication, cleanliness,location, checkin, value, host_username, host_avatar, response_text, response_created_at)
+FROM '/Users/dorriswong/hrsf119/airtimize/review/server/db/cassandra/reviews.csv'
+WITH DELIMITER = ',' AND HEADER = FALSE;
+
+COPY delete_reviews(review_id, listing_id, guest_username, guest_avatar, review_text, review_created_at, accuracy, communication, cleanliness,location, checkin, value, host_username, host_avatar, response_text, response_created_at)
 FROM '/Users/dorriswong/hrsf119/airtimize/review/server/db/cassandra/reviews.csv'
 WITH DELIMITER = ',' AND HEADER = FALSE;
 

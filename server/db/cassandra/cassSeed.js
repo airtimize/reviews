@@ -36,7 +36,7 @@ async function writer() {
   let ableToWrite = true;
   let review_id = 1;
 
-  for (let i = 0; i < 100; i += 1) {
+  for (let i = 0; i < 1000; i += 1) {
     const listing_id = i + 1;
     const num_reviews = Math.floor(randn_bm(0, 30, 3));
     let overallaccuracy = 0;
