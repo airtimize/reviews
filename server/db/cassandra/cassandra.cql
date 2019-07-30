@@ -17,49 +17,6 @@ CREATE TABLE listings (
   num_reviews int
 );
 
---2 tables
-CREATE TABLE reviews (
-  review_id time,
-  listing_id int,
-  guest_username text,
-  guest_avatar text,
-  review_text varchar,
-  review_created_at text,
-  accuracy tinyint,
-  communication tinyint,
-  cleanliness tinyint,
-  location tinyint,
-  checkin tinyint,
-  value tinyint,
-  host_username text,
-  host_avatar text,
-  response_text varchar,
-  response_created_at text,
-  PRIMARY KEY(listing_id,review_created_at)
-)
-WITH CLUSTERING ORDER BY (review_created_at DESC);
-
-CREATE TABLE delete_reviews (
-  review_id tinyint,
-  listing_id int,
-  guest_username text,
-  guest_avatar text,
-  review_text varchar,
-  review_created_at text,
-  accuracy tinyint,
-  communication tinyint,
-  cleanliness tinyint,
-  location tinyint,
-  checkin tinyint,
-  value tinyint,
-  host_username text,
-  host_avatar text,
-  response_text varchar,
-  response_created_at text,
-  PRIMARY KEY(listing_id, review_id)
-);
-
---1 table
 CREATE TABLE new_reviews (
   review_id timeuuid,
   listing_id int,
@@ -80,12 +37,6 @@ CREATE TABLE new_reviews (
   PRIMARY KEY(listing_id, review_id)
 )
 WITH CLUSTERING ORDER BY (review_id DESC);
-
--- CREATE TABLE users (
---   id int primary key,
---   username text,
---   avatar text
--- );
 
 CREATE TABLE reviews_by_accuracy (
   listing_id int,
@@ -123,24 +74,6 @@ CREATE TABLE reviews_by_value(
   PRIMARY KEY(listing_id,value)
 );
 
---NOSQL structure
--- CREATE TABLE overall_listings (
---   listing_id int,
---   hostusername text,
---   hostavatar text,
---   overallaccuracy decimal,
---   overallcommunication decimal,
---   overallcleanliness decimal,
---   overalllocation decimal,
---   overallcheckin decimal,
---   overallvalue decimal,
---   overall decimal,
---   num_reviews tinyint,
---   reviews list<frozen<map<text,text>>>,
---   PRIMARY KEY(listing_id)
--- );
-
-
 --./cassandra-loader -f /Users/dorriswong/hrsf119/airtimize/review/server/db/cassandra/reviews.csv -host localhost -schema "airtimize_reviews.reviews(review_id, listing_id, guest_username, guest_avatar, review_text, review_created_at, accuracy, communication, cleanliness,location, checkin, value, host_username, host_avatar, response_text, response_created_at)"
 
 COPY listings (listing_id, accuracy, communication, cleanliness, location, checkin, value, overall, num_reviews)
@@ -150,11 +83,3 @@ WITH DELIMITER = ',' AND HEADER = FALSE;
 COPY new_reviews(review_id, listing_id, guest_username, guest_avatar, review_text, review_created_at, accuracy, communication, cleanliness,location, checkin, value, host_username, host_avatar, response_text, response_created_at)
 FROM '/Users/dorriswong/hrsf119/airtimize/review/server/db/cassandra/reviews1.csv'
 WITH DELIMITER = ',' AND HEADER = FALSE;
-
-COPY delete_reviews(review_id, listing_id, guest_username, guest_avatar, review_text, review_created_at, accuracy, communication, cleanliness,location, checkin, value, host_username, host_avatar, response_text, response_created_at)
-FROM '/Users/dorriswong/hrsf119/airtimize/review/server/db/cassandra/reviews.csv'
-WITH DELIMITER = ',' AND HEADER = FALSE;
-
--- COPY users(id, username, avatar)
--- FROM '/Users/dorriswong/hrsf119/airtimize/review/server/db/csv/users.csv'
--- WITH DELIMITER = ',' AND HEADER = FALSE;

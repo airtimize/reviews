@@ -42,5 +42,3 @@ COPY listings(id, accuracy, communication, cleanliness,location, checkin, value,
 COPY reviews(listing_id, guest_user_id,review_text,review_created_at, accuracy, communication, cleanliness,location, checkin, value, host_user_id, response_text, response_created_at) FROM '/Users/dorriswong/hrsf119/airtimize/review/server/db/postgres/reviews.csv' DELIMITER ',' CSV;
 
 COPY users(username, avatar) from '/Users/dorriswong/hrsf119/airtimize/review/server/db/postgres/users.csv' DELIMITER ',' CSV;
-
--- EXPLAIN ANALYSE select * from [tablename] where [condition];

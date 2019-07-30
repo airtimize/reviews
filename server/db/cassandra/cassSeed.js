@@ -113,7 +113,6 @@ async function writer() {
   listingStream.end();
   reviewStream.end();
   //console.timeEnd('csv files creation');
-  //console.log(review_id);
 }
 
 writer();
