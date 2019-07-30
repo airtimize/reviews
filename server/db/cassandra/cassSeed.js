@@ -1,8 +1,9 @@
 const faker = require('faker');
 const fs = require('fs');
+const TimeUuid = require('cassandra-driver').types.TimeUuid;
 
-const listingStream = fs.createWriteStream('./listings.csv');
-const reviewStream = fs.createWriteStream('./reviews.csv');
+const listingStream = fs.createWriteStream('./listings1.csv');
+const reviewStream = fs.createWriteStream('./reviews1.csv');
 
 //console.time('csv files creation');
 
@@ -83,6 +84,8 @@ async function writer() {
         response_text = faker.lorem.sentence();
         response_created_at = faker.date.between(start, end).toDateString();
       }
+
+      review_id = TimeUuid.now();
 
       ableToWrite = reviewStream.write(`${review_id}, ${listing_id},${guestusername}, ${guestavatar},${review_text},${reviews_created_at},${accuracy},${communication},${cleanliness},${location},${check_in},${value},${hostusername},${hostavatar},${response_text},${response_created_at}\n`);
 

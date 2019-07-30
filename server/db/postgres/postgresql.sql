@@ -37,10 +37,10 @@ CREATE TABLE users (
   avatar VARCHAR(255)
 );
 
-COPY listings(id, accuracy, communication, cleanliness,location, checkin, value, overall, num_reviews) FROM '/Users/dorriswong/hrsf119/airtimize/review/server/db/postgres/listings.csv' DELIMITER ',' CSV HEADER;
+COPY listings(id, accuracy, communication, cleanliness,location, checkin, value, overall, num_reviews) FROM '/Users/dorriswong/hrsf119/airtimize/review/server/db/postgres/listings.csv' DELIMITER ',' CSV;
 
-COPY reviews(listing_id, guest_user_id,review_text,review_created_at, accuracy, communication, cleanliness,location, checkin, value, host_user_id, response_text, response_created_at) FROM '/Users/dorriswong/hrsf119/airtimize/review/server/db/postgres/reviews.csv' DELIMITER ',' CSV HEADER;
+COPY reviews(listing_id, guest_user_id,review_text,review_created_at, accuracy, communication, cleanliness,location, checkin, value, host_user_id, response_text, response_created_at) FROM '/Users/dorriswong/hrsf119/airtimize/review/server/db/postgres/reviews.csv' DELIMITER ',' CSV;
 
-COPY users(username, avatar) from '/Users/dorriswong/hrsf119/airtimize/review/server/db/postgres/users.csv' DELIMITER ',' CSV HEADER;
+COPY users(username, avatar) from '/Users/dorriswong/hrsf119/airtimize/review/server/db/postgres/users.csv' DELIMITER ',' CSV;
 
 -- EXPLAIN ANALYSE select * from [tablename] where [condition];
