@@ -10,7 +10,6 @@ function something() {
   });
 }
 
-
 async function writer() {
   let ableToWrite = true;
 
@@ -19,7 +18,7 @@ async function writer() {
     const username = faker.name.firstName();
     const avatar = faker.internet.avatar();
 
-    ableToWrite = fileStream.write(`${user_id},${username},${avatar}\n`);
+    ableToWrite = fileStream.write(`${username},${avatar}\n`);
 
     if (!ableToWrite) {
       await something();
