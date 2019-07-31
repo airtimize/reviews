@@ -19,7 +19,8 @@ function something2() {
 }
 
 function randn_bm(min, max, skew) {
-  var u = 0, v = 0;
+  let u = 0;
+  let v = 0;
   while(u === 0) u = Math.random();
   while(v === 0) v = Math.random();
   let num = Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
@@ -76,7 +77,7 @@ async function writer() {
       overallcheck_in += check_in;
       overallvalue += value;
 
-      if (has_response % 7 === 0){
+      if (has_response % 7 === 0) {
         response_text = faker.lorem.sentence();
         response_created_at = faker.date.between(start, end).toDateString();
       }
@@ -101,7 +102,6 @@ async function writer() {
     if (!ableToWrite) {
       await something();
     }
-
   }
 
   listingStream.end();
@@ -111,5 +111,3 @@ async function writer() {
 }
 
 writer();
-
-
