@@ -81,5 +81,5 @@ FROM '/Users/dorriswong/hrsf119/airtimize/review/server/db/cassandra/listings.cs
 WITH DELIMITER = ',' AND HEADER = FALSE;
 
 COPY new_reviews(review_id, listing_id, guest_username, guest_avatar, review_text, review_created_at, accuracy, communication, cleanliness,location, checkin, value, host_username, host_avatar, response_text, response_created_at)
-FROM '/Users/dorriswong/hrsf119/airtimize/review/server/db/cassandra/reviews1.csv'
+FROM '/Users/dorriswong/hrsf119/airtimize/review/server/db/cassandra/reviews.csv'
 WITH DELIMITER = ',' AND HEADER = FALSE;

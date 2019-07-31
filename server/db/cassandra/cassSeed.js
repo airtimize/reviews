@@ -2,8 +2,8 @@ const faker = require('faker');
 const fs = require('fs');
 const TimeUuid = require('cassandra-driver').types.TimeUuid;
 
-const listingStream = fs.createWriteStream('./listings1.csv');
-const reviewStream = fs.createWriteStream('./reviews1.csv');
+const listingStream = fs.createWriteStream('./listings.csv');
+const reviewStream = fs.createWriteStream('./reviews.csv');
 
 //console.time('csv files creation');
 
