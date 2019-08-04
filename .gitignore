@@ -32,3 +32,4 @@ notes.txt
 .vscode
 
 package-lock.json
+newrelic.js
