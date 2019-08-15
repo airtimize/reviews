@@ -1,6 +1,6 @@
 # Airtimize
 
-> Lodging Listing Reviews module
+> Lodging Listing Reviews Module
 
 ## Table of Contents
 
@@ -75,7 +75,7 @@ Update one review's ratings in the database.
 
 | Name             | Type          | Description                                                            |
 | ---------------- |:-------------:| :----------------------------------------------------------------------|
-| `reviewId    `   | `integer`     | *Required.* Review identifier.                                         |
+| `review_id    `   | `integer`     | *Required.* Review identifier.                                         |
 
 ### DELETE
 
@@ -87,5 +87,5 @@ Delete one review record from the database.
 
 | Name             | Type          | Description                                                            |
 | ---------------- |:-------------:| :----------------------------------------------------------------------|
-| `reviewId    `   | `integer`     | *Required.* Review identifier.                                         |
+| `review_id    `   | `integer`     | *Required.* Review identifier.                                         |
 
